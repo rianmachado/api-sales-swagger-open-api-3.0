@@ -1,0 +1,338 @@
+swagger: '2.0'
+info:
+  description: API de vendas
+  version: '1.0'
+  title: API Sales
+  termsOfService: Terms of Service
+  contact:
+    name: Bitcoin
+    url: api.rian/transacional
+    email: bitcoin@rian.com
+  license:
+    name: Apache License Version 2.0
+    url: 'https://www.apache.org/licesen.html'
+host: api-transacional.qa.rian.intranet
+basePath: /sales/v1
+paths:
+  
+  /receivables:
+    get:
+      tags:
+        - Recebimento de vendas
+      summary: >-
+        Obtém as vendas recebidas de acordo com a data informada
+      operationId: getSalesreceivablesByDate
+      produces:
+        - application/json
+        - application/json;charset=UTF-8
+      parameters:
+        
+        - name: initialDate
+          in: query
+          description: Data início do Agendamento - Formato dd/mm/yyyy
+          required: true
+          type: string
+          allowEmptyValue: false
+        - name: finalDate
+          in: query
+          description: Data fim Agendamento - Formato dd/mm/yyyy
+          required: true
+          type: string
+          allowEmptyValue: false
+        - name: idStelo
+          in: query
+          description: Id Stelo
+          required: true
+          type: array
+          items:
+            type: integer
+            format: int64
+          collectionFormat: multi
+          allowEmptyValue: false
+        - name: limit
+          in: query
+          description: Quantidade de Itens da Lista de Transação
+          required: false
+          type: integer
+          default: 10
+          format: int32
+          allowEmptyValue: false
+        - name: offset
+          in: query
+          description: Página da Lista de Transação
+          required: false
+          type: integer
+          default: 0
+          format: int32
+          allowEmptyValue: false
+      responses:
+        '200':
+          description: Retorna o recebimento das vendas com sucesso
+          schema:
+            $ref: '#/definitions/ReceivableModel'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Parâmetros inválidos
+          schema:
+            $ref: '#/definitions/ReceivableModel'
+      deprecated: false
+  
+  /summaryReceivables:
+    get:
+      tags:
+        - Consolidado do Recebimento de vendas
+      summary: >-
+        Obtém as vendas recebidas de acordo com a data informada
+      operationId: getSalesreceivablesSummaryByDate
+      produces:
+        - application/json
+        - application/json;charset=UTF-8
+      parameters:
+        
+        - name: initialDate
+          in: query
+          description: Data início do Agendamento - Formato dd/mm/yyyy
+          required: true
+          type: string
+          allowEmptyValue: false
+        - name: finalDate
+          in: query
+          description: Data fim Agendamento - Formato dd/mm/yyyy
+          required: true
+          type: string
+          allowEmptyValue: false
+        - name: cardBrandIds
+          in: query
+          description: Identificadores de Bandeiras de Cartão
+          required: false
+          type: array
+          items:
+            type: integer
+            format: int32
+          collectionFormat: multi
+          allowEmptyValue: false
+        - name: paymentIds
+          in: query
+          description: Identificadores meio de pagamento
+          required: false
+          type: array
+          items:
+            type: integer
+            format: int32
+          collectionFormat: multi
+          allowEmptyValue: false  
+      
+        - name: idStelo
+          in: query
+          description: Id Stelo
+          required: true
+          type: array
+          items:
+            type: integer
+            format: int64
+          collectionFormat: multi
+          allowEmptyValue: false
+        - name: limit
+          in: query
+          description: Quantidade de Itens da Lista de Transação
+          required: false
+          type: integer
+          default: 10
+          format: int32
+          allowEmptyValue: false
+        - name: offset
+          in: query
+          description: Página da Lista de Transação
+          required: false
+          type: integer
+          default: 0
+          format: int32
+          allowEmptyValue: false
+      responses:
+        '200':
+          description: Retorna consolidado com sucesso
+          schema:
+            $ref: '#/definitions/ReceivableSummaryModel'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Parâmetros inválidos
+          schema:
+            $ref: '#/definitions/ReceivableSummaryModel'
+      deprecated: false
+
+definitions:
+  Pageable:
+    type: object
+    properties:
+      offset:
+        type: integer
+        format: int64
+      pageNumber:
+        type: integer
+        format: int32
+      pageSize:
+        type: integer
+        format: int32
+      paged:
+        type: boolean
+      sort:
+        $ref: '#/definitions/Sort'
+      unpaged:
+        type: boolean
+    title: Pageable
+ 
+  Page«ReceivableModel»:
+    type: object
+    properties:
+      content:
+        type: array
+        items:
+          $ref: '#/definitions/ReceivableModel'
+      empty:
+        type: boolean
+      first:
+        type: boolean
+      last:
+        type: boolean
+      number:
+        type: integer
+        format: int32
+      numberOfElements:
+        type: integer
+        format: int32
+      pageable:
+        $ref: '#/definitions/Pageable'
+      size:
+        type: integer
+        format: int32
+      sort:
+        $ref: '#/definitions/Sort'
+      totalElements:
+        type: integer
+        format: int64
+      totalPages:
+        type: integer
+        format: int32
+    title: Page«ReceivableModel»
+  
+  ReceivableSummaryModel:
+    type: object
+    properties:
+     summary:
+        $ref: '#/definitions/Summary'
+     idStelo:
+        type: integer
+        format: int32
+     itens:
+        type: array
+        items:
+         $ref: '#/definitions/ReceivableModel'
+    title: ReceivableSummaryModel
+    
+  Summary:
+    type: object
+    properties:
+      totalQuantity:
+        type: integer
+        format: int64
+        description: Quantidade total
+      totalAmount:
+        type: number
+        format: double
+        description: Valor total
+      totalNetAmount:
+        type: number
+        format: double
+        description: Total Valor Líquido
+        items:
+          type: string
+      secondaryFields:
+        type: array
+        items:
+          type: string  
+    
+
+  Sort:
+    type: object
+    properties:
+      empty:
+        type: boolean
+      sorted:
+        type: boolean
+      unsorted:
+        type: boolean
+    title: Sort
+
+  ReceivableModel:
+    type: object
+    properties:
+      authorizationCode:
+        type: string
+        description: Código de Autorização da Venda
+      cardBrand:
+        type: string
+        description: Bandeira do Cartão
+      cardBrandId:
+        type: integer
+        format: int32
+        description: Identificador da Bandeira do Cartão
+      cardNumber:
+        type: string
+        description: Número do Cartão
+      grossAmount:
+        type: number
+        format: double
+        description: Valor Bruto
+      installment:
+        type: integer
+        format: int32
+        description: Parcelas
+      installments:
+        type: integer
+        format: int32
+        description: Quantidade de Parcelas
+      merchantId:
+        type: integer
+        format: integer($int32)
+        description: Identificador do Estabelecimento Comercial
+      netAmount:
+        type: number
+        format: double
+        description: Valor Líquido
+      nsu:
+        type: string
+        description: Número Sequêncial Único
+      paymentDate:
+        type: string
+        description: Data do Pagamento
+      paymentType:
+        type: string
+        description: Meio de pagamento
+      paymentTypeId:
+        type: integer
+        format: int32
+        description: Identificador do Tipo de Pagamento
+      saleDate:
+        type: string
+        description: Data da Venda
+      saleId:
+        type: string
+        description: Código Identificador da Venda
+      terminal:
+        type: string
+        description: Número Lógico do Terminal
+      settlementTypeId:
+        type: integer
+        format: int32
+        description: identificador Tipo de liquidação
+      settlementType:
+        type: string
+        description: Tipo de liquidação  
+      
+    title: ReceivableModel

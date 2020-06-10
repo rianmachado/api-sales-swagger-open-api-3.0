@@ -1,7 +1,19 @@
-# api-sales-swagger-open-api-3.0
-- API de exemplo ciada a partir do design encontrado no documentacao-api/sales-transacional.yaml . 
-  Os contratos da API foram gerados utilizando o swagger codegen(open api 3.0) para atender apenas a camada REST.
-- As demais camadas da aplicação foram desenvolvidas para mostrar o "intercambio" com a camada REST, resaltando a camada de dados onde utilizei MONGO DB (pré requisito para esse material)
+# Getting Started
+## ECLIPSE 
+   ### Configurações Formato style code
+    - Window, preference, java, code Style, Formatter. Na raiz do projeto selecione a o  EclipseFormatter.xml
+
+   ### Configurações cjheck style 
+
+
+### Reference Documentation
+For further reference, please consider the following sections:
+
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
+* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#using-boot-devtools)
+* [Spring Configuration Processor](https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#configuration-metadata-annotation-processor)
+* [Spring Data MongoDB](https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-mongodb)
+* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#production-ready)
 
 ### Guides
 The following guides illustrate how to use some features concretely:
